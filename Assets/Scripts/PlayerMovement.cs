@@ -8,19 +8,22 @@ public class PlayerMovement : MonoBehaviour
 
     public float movingSpeed = 5.0f;
     public float rotateSpeed = 200.0f;
-    public Transform target;
+    private Transform target;
 
-    public enum movingState { MoveUp, TowardAPosition, RotateAround };
+    public enum movingState { MoveUp, TowardAPosition, RotateAround ,ForceTowardsADirection};
 
     public movingState currentMovingState = movingState.MoveUp;
 
-   public float radious = 1.0f;
-   float angularSpeed = 20.0f;
+ 
+   public float angularSpeed = 20.0f;
    float posX, posY = 0.0f;
    float alpha = 0.0f;
 
+    private PlanetData _planetData;
 
     bool isRotationStart = false;
+    bool isdirectedForceStart = false;
+    Vector2 lastPosition;
 
     private void Awake()
     {
@@ -32,6 +35,19 @@ public class PlayerMovement : MonoBehaviour
         currentMovingState = movingState.MoveUp;
     }
 
+    public void SetData(PlanetData planetData, GameObject targetObj)
+    {
+        target = targetObj.transform;
+        _planetData = planetData;
+        isRotationStart = false;
+        isdirectedForceStart = false;
+    }
+
+    public void ResetData()
+    {
+        target = null;
+        _planetData = null;
+    }
    
     void Update()
     {
@@ -39,19 +55,29 @@ public class PlayerMovement : MonoBehaviour
        switch (currentMovingState)
         {
             case movingState.MoveUp:
-                MoveUp();
+                PlayerNormalMove();
                 break;
            case movingState.TowardAPosition:
                 MoveTowardsAposition();
                 break;
            case movingState.RotateAround:
                MoveRotateARound();
+               break;
+           case movingState.ForceTowardsADirection:
+                ForceTowardsADirection();
                 break;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            currentMovingState = movingState.ForceTowardsADirection;
         }
     }
 
-    public void MoveUp()
+    public void PlayerNormalMove()
     {
+        if (lastPosition == null)
+            lastPosition = this.transform.position;
         rb.velocity = transform.up * movingSpeed;
     }
 
@@ -64,42 +90,68 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = transform.up * movingSpeed;
     }
 
+    bool isClockwiseMove = true;
+
     public void MoveRotateARound()
     {
+        if (target == null || _planetData == null)
+            return;
 
-		/* Vector2 center = target.position;
-		 rb.velocity = Vector2.zero;
-		 transform.position = new Vector2(center.x + a*Mathf.Cos(alpha), center.y + a*Mathf.Sin(alpha)) ;
-		 alpha = alpha - deltaAlpha;*/
+
 		rb.velocity = Vector2.zero;
-		Transform center = target;
-		if (isRotationStart == false)
+       // rb.angularVelocity = 0.0f;
+
+        if (isRotationStart == false)
         {
             isRotationStart = true;
-            alpha = Utils.angle360(target.position, this.gameObject.transform.position) ;
-			// alpha = alpha * Mathf.Deg2Rad;
-			//radious = Utils.GetDistance(center.position, this.gameObject.transform.position);
-            Debug.Log("init Angle is : " + alpha + "  radious is  " + radious);	
+            alpha = Utils.angle360(target.position, this.gameObject.transform.position);
+
+            Vector2 rocketDirection = Utils.GetPlayerDirection(lastPosition, this.gameObject.transform.position,this.transform);
+
+            if ((alpha >= 0 && alpha <= 90) || (alpha >= 270 && alpha <= 360))
+            {
+                isClockwiseMove = false;
+            }
+            else
+                isClockwiseMove = true;
+	
+           Debug.Log("init Angle is : " + alpha + " isClock Move  " + isClockwiseMove);	
 		}
 
 		float rad = alpha * Mathf.Deg2Rad;
-		posX = center.position.x + Mathf.Cos(rad) * radious;
-		float sinVal = Mathf.Sin(rad);
-		posY = center.position.y + sinVal * radious;
+
+        posX = _planetData.centerObject.transform.position.x + Mathf.Cos(rad) * _planetData.radious;
+		posY = _planetData.centerObject.transform.position.y + Mathf.Sin(rad) * _planetData.radious;
 
 		transform.position = new Vector2(posX, posY);
-		alpha = alpha - Time.deltaTime * angularSpeed;
-		Debug.Log(" Angle is : " + alpha);
+        if(isClockwiseMove == true)
+            alpha = alpha - Time.deltaTime * angularSpeed;
+        else
+            alpha = alpha + Time.deltaTime * angularSpeed;
+
+        Vector3 dir;
+        if(isClockwiseMove == true)
+            dir = target.position - transform.position;
+        else
+            dir = transform.position  - target.position;
 
 
-		//  if (alpha >= 360)
-		//   alpha = 0;
-
-		Vector3 dir = target.position - transform.position;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis( angle, Vector3.forward);
 
     }
 
-    
+    void ForceTowardsADirection()
+    {
+        if(isdirectedForceStart == false)
+        {
+            isdirectedForceStart = true;
+            rb.angularVelocity = 0.0f;
+            lastPosition = this.transform.position;
+        }
+        PlayerNormalMove();
+    }
+
+
+
 }
