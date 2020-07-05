@@ -85,6 +85,11 @@ public class PlayerMovement : MonoBehaviour
         Vector2 direction = (Vector2)target.position - rb.position;
         direction.Normalize();
         float rotateAmount = Vector3.Cross(direction, transform.up).z;
+        Debug.Log("rot amount ; " + rotateAmount);
+        if (rotateAmount >= 0)
+            isClockwiseMove = true;
+        else
+            isClockwiseMove = false;
         rb.angularVelocity = -rotateAmount * rotateSpeed;
         rb.velocity = transform.up * movingSpeed;
     }
@@ -106,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
             alpha = Utils.angle360(target.position, this.gameObject.transform.position);
 
             //Vector2 rocketDirection = Utils.GetPlayerDirection(lastPosition, this.gameObject.transform.position,this.transform);
-            isClockwiseMove = GetMovementDirection(alpha, lastPosition, this.gameObject.transform.position);
+          //  isClockwiseMove = GetMovementDirection(alpha, lastPosition, this.gameObject.transform.position);
            /* if ((alpha >= 0 && alpha <= 90) || (alpha >= 270 && alpha <= 360))
             {
                 isClockwiseMove = false;
