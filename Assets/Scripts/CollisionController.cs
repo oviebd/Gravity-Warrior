@@ -9,7 +9,6 @@ public class CollisionController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Collided with " + collision.gameObject.name);
         if (onCollide != null)
             onCollide.Invoke();
     }

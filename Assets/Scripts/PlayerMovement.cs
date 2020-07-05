@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         currentMovingState = movingState.MoveUp;
+        lastPosition = this.transform.position;
     }
 
     public void SetData(PlanetData planetData, GameObject targetObj)
@@ -76,8 +77,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void PlayerNormalMove()
     {
-        if (lastPosition == null)
-            lastPosition = this.transform.position;
         rb.velocity = transform.up * movingSpeed;
     }
 
@@ -106,16 +105,16 @@ public class PlayerMovement : MonoBehaviour
             isRotationStart = true;
             alpha = Utils.angle360(target.position, this.gameObject.transform.position);
 
-            Vector2 rocketDirection = Utils.GetPlayerDirection(lastPosition, this.gameObject.transform.position,this.transform);
-
-            if ((alpha >= 0 && alpha <= 90) || (alpha >= 270 && alpha <= 360))
+            //Vector2 rocketDirection = Utils.GetPlayerDirection(lastPosition, this.gameObject.transform.position,this.transform);
+            isClockwiseMove = GetMovementDirection(alpha, lastPosition, this.gameObject.transform.position);
+           /* if ((alpha >= 0 && alpha <= 90) || (alpha >= 270 && alpha <= 360))
             {
                 isClockwiseMove = false;
             }
             else
                 isClockwiseMove = true;
-	
-           Debug.Log("init Angle is : " + alpha + " isClock Move  " + isClockwiseMove);	
+	*/
+            Debug.Log("init Angle is : " + alpha + " isClock Move  " + isClockwiseMove);	
 		}
 
 		float rad = alpha * Mathf.Deg2Rad;
@@ -150,6 +149,61 @@ public class PlayerMovement : MonoBehaviour
             lastPosition = this.transform.position;
         }
         PlayerNormalMove();
+    }
+
+
+    /*bool GetMovementDirection(float angle, Vector2 lastPosition, Vector2 currentPosition)
+   {
+       bool isClockwise = false;
+       bool isPlayerGoUp = true;
+       bool isPlayerGoRight = true;
+
+       float offsetX = 0.0f;
+
+       isPlayerGoUp = lastPosition.y <= currentPosition.y;
+
+       float diffX = lastPosition.x - currentPosition.x;
+       if (Mathf.Abs(diffX) >= offsetX)
+           isPlayerGoRight = lastPosition.x < currentPosition.x;
+       else
+           isPlayerGoRight = false;
+
+       Debug.Log("IsGoUp ; " + isPlayerGoUp + "Is Right " + isPlayerGoRight + "  DiffX : " + diffX);
+       if ((angle >= 0 && angle <= 90) || (angle >= 270 && angle <= 360))
+       {
+           if (isPlayerGoUp == true)  //IF  Up THEN depends on players left right movement
+               isClockwise = false;
+           if(isPlayerGoUp == false)
+               isClockwise = isPlayerGoRight;
+       }
+       else
+       {
+           if (isPlayerGoUp == true)  //IF  Up THEN depends on players left right movement
+              isClockwise = !isPlayerGoRight;
+          if(isPlayerGoUp == false)
+               isClockwise = isPlayerGoRight;
+       }
+
+       return isClockwise;
+   }*/
+
+    bool GetMovementDirection(float angle, Vector2 lastPosition, Vector2 currentPosition)
+    {
+        bool isClockwise = false;
+        bool isPlayerGoUp = true;
+        isPlayerGoUp = lastPosition.y <= currentPosition.y;
+        Debug.Log("IsGoUp ; " + isPlayerGoUp  );
+      
+        if (angle >= 90 && angle <= 270)
+        {
+            isClockwise = isPlayerGoUp;
+        }
+        else
+        {
+            isClockwise = !isPlayerGoUp;
+        }
+
+        return isClockwise;
     }
 
 
