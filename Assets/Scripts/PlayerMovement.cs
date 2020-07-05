@@ -7,15 +7,15 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
 
     public float movingSpeed = 5.0f;
-    public float rotateSpeed = 200.0f;
+   
     private Transform target;
 
-    public enum movingState { MoveUp, TowardAPosition, RotateAround ,ForceTowardsADirection};
+    public enum movingState { MoveUp, TowardAPosition, RotateAround ,ForceTowardsADirection,StopWithUpwordDirection,pocketShoot};
 
     public movingState currentMovingState = movingState.MoveUp;
 
  
-   public float angularSpeed = 20.0f;
+  
    float posX, posY = 0.0f;
    float alpha = 0.0f;
 
@@ -67,6 +67,13 @@ public class PlayerMovement : MonoBehaviour
            case movingState.ForceTowardsADirection:
                 ForceTowardsADirection();
                 break;
+            case movingState.StopWithUpwordDirection:
+                StopWithUpwordDirection();
+                break;
+            case movingState.pocketShoot:
+                ShootFromPocket();
+                break;
+
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -77,7 +84,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void PlayerNormalMove()
     {
+        unparentRocket();
         rb.velocity = transform.up * movingSpeed;
+    }
+    public void PlayerNormalMove(float speed)
+    {
+        unparentRocket();
+        rb.velocity = transform.up * speed;
     }
 
     public void MoveTowardsAposition()
@@ -85,13 +98,15 @@ public class PlayerMovement : MonoBehaviour
         Vector2 direction = (Vector2)target.position - rb.position;
         direction.Normalize();
         float rotateAmount = Vector3.Cross(direction, transform.up).z;
-        Debug.Log("rot amount ; " + rotateAmount);
+
+
         if (rotateAmount >= 0)
             isClockwiseMove = true;
         else
             isClockwiseMove = false;
-        rb.angularVelocity = -rotateAmount * rotateSpeed;
-        rb.velocity = transform.up * movingSpeed;
+
+        rb.angularVelocity = -rotateAmount * _planetData.playerRotationSPeed;
+        rb.velocity = transform.up * _planetData.playerMovingSpeed;
     }
 
     bool isClockwiseMove = true;
@@ -109,17 +124,6 @@ public class PlayerMovement : MonoBehaviour
         {
             isRotationStart = true;
             alpha = Utils.angle360(target.position, this.gameObject.transform.position);
-
-            //Vector2 rocketDirection = Utils.GetPlayerDirection(lastPosition, this.gameObject.transform.position,this.transform);
-          //  isClockwiseMove = GetMovementDirection(alpha, lastPosition, this.gameObject.transform.position);
-           /* if ((alpha >= 0 && alpha <= 90) || (alpha >= 270 && alpha <= 360))
-            {
-                isClockwiseMove = false;
-            }
-            else
-                isClockwiseMove = true;
-	*/
-            Debug.Log("init Angle is : " + alpha + " isClock Move  " + isClockwiseMove);	
 		}
 
 		float rad = alpha * Mathf.Deg2Rad;
@@ -129,9 +133,9 @@ public class PlayerMovement : MonoBehaviour
 
 		transform.position = new Vector2(posX, posY);
         if(isClockwiseMove == true)
-            alpha = alpha - Time.deltaTime * angularSpeed;
+            alpha = alpha - Time.deltaTime * _planetData.playerAngularSpeed;
         else
-            alpha = alpha + Time.deltaTime * angularSpeed;
+            alpha = alpha + Time.deltaTime * _planetData.playerAngularSpeed;
 
         Vector3 dir;
         if(isClockwiseMove == true)
@@ -157,60 +161,23 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    /*bool GetMovementDirection(float angle, Vector2 lastPosition, Vector2 currentPosition)
-   {
-       bool isClockwise = false;
-       bool isPlayerGoUp = true;
-       bool isPlayerGoRight = true;
-
-       float offsetX = 0.0f;
-
-       isPlayerGoUp = lastPosition.y <= currentPosition.y;
-
-       float diffX = lastPosition.x - currentPosition.x;
-       if (Mathf.Abs(diffX) >= offsetX)
-           isPlayerGoRight = lastPosition.x < currentPosition.x;
-       else
-           isPlayerGoRight = false;
-
-       Debug.Log("IsGoUp ; " + isPlayerGoUp + "Is Right " + isPlayerGoRight + "  DiffX : " + diffX);
-       if ((angle >= 0 && angle <= 90) || (angle >= 270 && angle <= 360))
-       {
-           if (isPlayerGoUp == true)  //IF  Up THEN depends on players left right movement
-               isClockwise = false;
-           if(isPlayerGoUp == false)
-               isClockwise = isPlayerGoRight;
-       }
-       else
-       {
-           if (isPlayerGoUp == true)  //IF  Up THEN depends on players left right movement
-              isClockwise = !isPlayerGoRight;
-          if(isPlayerGoUp == false)
-               isClockwise = isPlayerGoRight;
-       }
-
-       return isClockwise;
-   }*/
-
-    bool GetMovementDirection(float angle, Vector2 lastPosition, Vector2 currentPosition)
+    public void StopWithUpwordDirection()
     {
-        bool isClockwise = false;
-        bool isPlayerGoUp = true;
-        isPlayerGoUp = lastPosition.y <= currentPosition.y;
-        Debug.Log("IsGoUp ; " + isPlayerGoUp  );
-      
-        if (angle >= 90 && angle <= 270)
-        {
-            isClockwise = isPlayerGoUp;
-        }
-        else
-        {
-            isClockwise = !isPlayerGoUp;
-        }
-
-        return isClockwise;
+        rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0.0f;
+        transform.rotation = new Quaternion(0, 0, 0, 0);
+        transform.parent = target;
     }
 
+    public void ShootFromPocket()
+    {
+        StopWithUpwordDirection();
+        PlayerNormalMove(40.0f);
+    }
 
+    void unparentRocket()
+    {
+        transform.parent = null;
+    }
 
 }
