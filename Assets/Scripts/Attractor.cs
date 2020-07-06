@@ -5,23 +5,26 @@ using UnityEngine;
 public class Attractor : MonoBehaviour
 {
 	GameObject player;
-	PlayerMovement playerMovement;
+	//PlayerMovement playerMovement;
 	Rigidbody2D playerRb;
 	Rigidbody2D rb;
-	const float G = 1;
+	public float G = 2;
+
+	public bool isAttractorACtive = false;
 
 	private void Start()
 	{
 		player = GameObject.FindGameObjectWithTag("Player");
 		playerRb = player.GetComponent<Rigidbody2D>();
-		playerMovement = player.GetComponent<PlayerMovement>();
+		//playerMovement = player.GetComponent<PlayerMovement>();
 		rb = this.gameObject.GetComponent<Rigidbody2D>();
 	}
 
     private void FixedUpdate()
     {
-		Attract();
-    }
+        //if(isAttractorACtive == true)
+			//Attract();
+	}
 
     void Attract()
 	{

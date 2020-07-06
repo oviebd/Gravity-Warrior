@@ -118,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 		rb.velocity = Vector2.zero;
-       // rb.angularVelocity = 0.0f;
+        rb.angularVelocity = 0.0f;
 
         if (isRotationStart == false)
         {
@@ -167,11 +167,11 @@ public class PlayerMovement : MonoBehaviour
         rb.angularVelocity = 0.0f;
         transform.rotation = new Quaternion(0, 0, 0, 0);
         transform.parent = target;
+        transform.localPosition = Vector2.zero;
     }
 
     public void ShootFromPocket()
     {
-        StopWithUpwordDirection();
         PlayerNormalMove(40.0f);
     }
 
@@ -179,5 +179,7 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.parent = null;
     }
+
+
 
 }

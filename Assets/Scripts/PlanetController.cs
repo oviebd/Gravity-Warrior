@@ -18,7 +18,6 @@ public class PlanetController : MonoBehaviour
 
     private PlanetData planetData = new PlanetData();
 
-
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -32,7 +31,6 @@ public class PlanetController : MonoBehaviour
         playerMovement.ResetData();
         playerMovement.currentMovingState = PlayerMovement.movingState.TowardAPosition;
         playerMovement.SetData(planetData, center);
-        
     }
 
     public void InnerCircleCollidedWithPlayer()
@@ -41,11 +39,14 @@ public class PlanetController : MonoBehaviour
         playerMovement.SetData(planetData, center);
         if (isItPocketType)
         {
-            playerMovement.currentMovingState = PlayerMovement.movingState.StopWithUpwordDirection;
+           
             if(isPocketAutoShootable == true)
             {
+                playerMovement.StopWithUpwordDirection();
                 playerMovement.currentMovingState = PlayerMovement.movingState.pocketShoot;
-            }
+            }else
+                playerMovement.currentMovingState = PlayerMovement.movingState.StopWithUpwordDirection;
+
 
         }
         else
