@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
    
     private Transform target;
 
-    public enum movingState { MoveUp, TowardAPosition, RotateAround ,ForceTowardsADirection,StopWithUpwordDirection,pocketShoot};
+    public enum movingState { MoveUp, TowardAPosition, RotateAround ,ForceTowardsADirection,StopWithUpwordDirection,pocketShoot,FreeJump};
 
     public movingState currentMovingState = movingState.MoveUp;
 
@@ -23,7 +23,11 @@ public class PlayerMovement : MonoBehaviour
 
     bool isRotationStart = false;
     bool isdirectedForceStart = false;
-    Vector2 lastPosition;
+
+    bool isCloseObjectGet = false;
+    GameObject closeObject = null;
+    public bool isPlayerDocked = false;
+   
 
     private void Awake()
     {
@@ -33,7 +37,6 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         currentMovingState = movingState.MoveUp;
-        lastPosition = this.transform.position;
     }
 
     public void SetData(PlanetData planetData, GameObject targetObj)
@@ -48,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
     {
         target = null;
         _planetData = null;
+        isCloseObjectGet = false;
+        closeObject = null;
     }
    
     void Update()
@@ -65,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
                MoveRotateARound();
                break;
            case movingState.ForceTowardsADirection:
-                ForceTowardsADirection();
+                    ForceTowardsADirection();
                 break;
             case movingState.StopWithUpwordDirection:
                 StopWithUpwordDirection();
@@ -74,27 +79,56 @@ public class PlayerMovement : MonoBehaviour
                 ShootFromPocket();
                 break;
 
+            case movingState.FreeJump:
+                FreeJumpMove();
+                break;
+
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            currentMovingState = movingState.ForceTowardsADirection;
+            if(isPlayerDocked == true)
+                currentMovingState = movingState.ForceTowardsADirection;
+            else
+                currentMovingState = movingState.FreeJump;
+
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            
+        }
+    }
+
+    public void SetMoveState(movingState state)
+    {
+        currentMovingState = state;
     }
 
     public void PlayerNormalMove()
     {
-        unparentRocket();
-        rb.velocity = transform.up * movingSpeed;
+        PlayerNormalMove(movingSpeed);
     }
     public void PlayerNormalMove(float speed)
     {
+        isPlayerDocked = false;
         unparentRocket();
         rb.velocity = transform.up * speed;
     }
 
     public void MoveTowardsAposition()
     {
+        if (_planetData == null)
+            return;
+       // isPlayerDocked = true;
+     
+       MoveTowardsAposition(target, _planetData.playerRotationSPeed, _planetData.playerMovingSpeed);
+       
+    }
+
+    public void MoveTowardsAposition(Transform target,float rotateSpeed,float movingSpeed)
+    {
+        
         Vector2 direction = (Vector2)target.position - rb.position;
         direction.Normalize();
         float rotateAmount = Vector3.Cross(direction, transform.up).z;
@@ -105,8 +139,8 @@ public class PlayerMovement : MonoBehaviour
         else
             isClockwiseMove = false;
 
-        rb.angularVelocity = -rotateAmount * _planetData.playerRotationSPeed;
-        rb.velocity = transform.up * _planetData.playerMovingSpeed;
+        rb.angularVelocity = -rotateAmount * rotateSpeed;
+        rb.velocity = transform.up * movingSpeed;
     }
 
     bool isClockwiseMove = true;
@@ -116,8 +150,10 @@ public class PlayerMovement : MonoBehaviour
         if (target == null || _planetData == null)
             return;
 
+        isPlayerDocked = true;
+     
 
-		rb.velocity = Vector2.zero;
+        rb.velocity = Vector2.zero;
         rb.angularVelocity = 0.0f;
 
         if (isRotationStart == false)
@@ -127,9 +163,13 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		float rad = alpha * Mathf.Deg2Rad;
+        float distance = Vector2.Distance(this.transform.position, _planetData.centerObject.transform.position);
+        float properDistance = distance ;
+        float radious = properDistance;
+        Debug.Log("distance : " + distance + "  proper distance :  " + properDistance);
 
-        posX = _planetData.centerObject.transform.position.x + Mathf.Cos(rad) * _planetData.radious;
-		posY = _planetData.centerObject.transform.position.y + Mathf.Sin(rad) * _planetData.radious;
+        posX = _planetData.centerObject.transform.position.x + Mathf.Cos(rad) * radious;
+		posY = _planetData.centerObject.transform.position.y + Mathf.Sin(rad) * radious;
 
 		transform.position = new Vector2(posX, posY);
         if(isClockwiseMove == true)
@@ -155,7 +195,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isdirectedForceStart = true;
             rb.angularVelocity = 0.0f;
-            lastPosition = this.transform.position;
+            
         }
         PlayerNormalMove();
     }
@@ -172,12 +212,54 @@ public class PlayerMovement : MonoBehaviour
 
     public void ShootFromPocket()
     {
-        PlayerNormalMove(40.0f);
+        PlayerNormalMove(50.0f);
     }
 
     void unparentRocket()
     {
         transform.parent = null;
+    }
+
+   
+
+    void FreeJumpMove()
+    {
+
+        if(isCloseObjectGet == false)
+        {
+            isCloseObjectGet = true;
+            closeObject = GetGameobjectsWithinARadious(10.0f);
+        }
+        if (closeObject == null)
+            return;
+
+        MoveTowardsAposition(closeObject.transform,1000,30);
+
+    }
+
+    GameObject GetGameobjectsWithinARadious(float range)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(this.gameObject.transform.position, range);
+        float minDistance = Mathf.Infinity;
+        GameObject closeObject = null;
+        Collider2D playerCollider = this.gameObject.GetComponent<Collider2D>();
+        for(int i= 0; i < colliders.Length; i++)
+        {
+            GameObject obj = colliders[i].gameObject;
+                
+           
+            if (playerCollider != colliders[i] && obj.tag == "InnerCircle")
+            {
+                float distance = Vector2.Distance(this.transform.position, obj.transform.position);
+                if(distance < minDistance)
+                {
+                    closeObject = obj;
+                    minDistance = distance;
+                }
+            }
+        }
+        Debug.Log("Closest Obj Name : " + closeObject.name );
+        return closeObject;
     }
 
 

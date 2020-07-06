@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5312202380153044834}
   m_Layer: 8
   m_Name: Inner circle
-  m_TagString: Untagged
+  m_TagString: InnerCircle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -213,8 +213,8 @@ MonoBehaviour:
   center: {fileID: 3341616837654908712}
   radious: 1
   _playerAngularSpeed: 150
-  _playerMovingSpeed: 2
-  _playerRotationSpeed: 40
+  _playerMovingSpeed: 5
+  _playerRotationSpeed: 10
 --- !u!50 &3341616838131999691
 Rigidbody2D:
   serializedVersion: 4
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 120096008794747063}
   m_Layer: 9
   m_Name: outer circle
-  m_TagString: Untagged
+  m_TagString: OuterCircle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

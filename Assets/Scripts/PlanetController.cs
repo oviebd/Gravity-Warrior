@@ -36,10 +36,13 @@ public class PlanetController : MonoBehaviour
     public void InnerCircleCollidedWithPlayer()
     {
         playerMovement.ResetData();
+        float dir = (player.transform.position - center.transform.position).magnitude;
+        radious = dir;
+       // SetPlanetData();
+       // Debug.Log(radious);
         playerMovement.SetData(planetData, center);
         if (isItPocketType)
         {
-           
             if(isPocketAutoShootable == true)
             {
                 playerMovement.StopWithUpwordDirection();

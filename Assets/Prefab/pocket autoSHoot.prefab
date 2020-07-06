@@ -356,7 +356,7 @@ MonoBehaviour:
   radious: 1
   _playerAngularSpeed: 150
   _playerMovingSpeed: 5
-  _playerRotationSpeed: 100
+  _playerRotationSpeed: 400
 --- !u!50 &5335588647194986050
 Rigidbody2D:
   serializedVersion: 4
