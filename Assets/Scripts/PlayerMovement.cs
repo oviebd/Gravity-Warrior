@@ -14,20 +14,21 @@ public class PlayerMovement : MonoBehaviour
 
     public movingState currentMovingState = movingState.MoveUp;
 
- 
+    private IMove _rotateAround;
+    private IMove _moveTowardsTarget;
+    private IMove _moveTowardsDirection;
   
-   float posX, posY = 0.0f;
-   float alpha = 0.0f;
-
+  
     private PlanetData _planetData;
 
-    bool isRotationStart = false;
+   
     bool isdirectedForceStart = false;
 
     bool isCloseObjectGet = false;
     GameObject closeObject = null;
     public bool isPlayerDocked = false;
-   
+
+    private MovingData _moveData = new MovingData();
 
     private void Awake()
     {
@@ -37,14 +38,25 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         currentMovingState = movingState.MoveUp;
+        _rotateAround = GetComponent<RotateAround>();
+        _moveTowardsTarget = GetComponent<MoveTowardsTarget>();
+        _moveTowardsDirection = GetComponent<MoveTowardsDirection>();
+
+        SetMoveState(movingState.MoveUp);
     }
 
     public void SetData(PlanetData planetData, GameObject targetObj)
     {
         target = targetObj.transform;
         _planetData = planetData;
-        isRotationStart = false;
+       
         isdirectedForceStart = false;
+
+        _moveData = new MovingData();
+        _moveData.targetObj = targetObj;
+        _moveData.rotationSpeed = _planetData.playerRotationSpeed;
+        _moveData.movingSpeed = _planetData.playerMovingSpeed;
+        _moveData.torque = _planetData.playerTorque;
     }
 
     public void ResetData()
@@ -57,26 +69,44 @@ public class PlayerMovement : MonoBehaviour
    
     void Update()
     {
-        //Debug.Log("Current State : " + currentMovingState);
-       switch (currentMovingState)
+       
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isPlayerDocked == true)
+                SetMoveState(movingState.ForceTowardsADirection);
+          
+            else
+                SetMoveState(movingState.FreeJump);
+        }
+    }
+
+    public void SetMoveState(movingState state)
+    {
+        currentMovingState = state;
+
+        _moveTowardsTarget.StopMove();
+        _rotateAround.StopMove();
+        _moveTowardsDirection.StopMove();
+
+        switch (state)
         {
             case movingState.MoveUp:
                 PlayerNormalMove();
                 break;
-           case movingState.TowardAPosition:
+            case movingState.TowardAPosition:
                 MoveTowardsAposition();
                 break;
-           case movingState.RotateAround:
-               MoveRotateARound();
-               break;
-           case movingState.ForceTowardsADirection:
-                    ForceTowardsADirection();
+            case movingState.RotateAround:
+                MoveRotateARound();
+                break;
+            case movingState.ForceTowardsADirection:
+                ForceTowardsADirection();
                 break;
             case movingState.StopWithUpwordDirection:
-                StopWithUpwordDirection();
+               StopWithUpwordDirection();
                 break;
             case movingState.pocketShoot:
-                ShootFromPocket();
+               ShootFromPocket();
                 break;
 
             case movingState.FreeJump:
@@ -84,25 +114,6 @@ public class PlayerMovement : MonoBehaviour
                 break;
 
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if(isPlayerDocked == true)
-                currentMovingState = movingState.ForceTowardsADirection;
-            else
-                currentMovingState = movingState.FreeJump;
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            
-        }
-    }
-
-    public void SetMoveState(movingState state)
-    {
-        currentMovingState = state;
     }
 
     public void PlayerNormalMove()
@@ -113,7 +124,11 @@ public class PlayerMovement : MonoBehaviour
     {
         isPlayerDocked = false;
         unparentRocket();
-        rb.velocity = transform.up * speed;
+        _moveData.direction = Vector3.up;
+        _moveData.movingSpeed = speed;
+
+        _moveTowardsDirection.SetUp(_moveData);
+        _moveTowardsDirection.StartMove();
     }
 
     public void MoveTowardsAposition()
@@ -122,28 +137,22 @@ public class PlayerMovement : MonoBehaviour
             return;
        // isPlayerDocked = true;
      
-       MoveTowardsAposition(target, _planetData.playerRotationSPeed, _planetData.playerMovingSpeed);
+       MoveTowardsAposition(target, _planetData.playerTorque, _planetData.playerMovingSpeed);
        
     }
 
     public void MoveTowardsAposition(Transform target,float rotateSpeed,float movingSpeed)
     {
-        
-        Vector2 direction = (Vector2)target.position - rb.position;
-        direction.Normalize();
-        float rotateAmount = Vector3.Cross(direction, transform.up).z;
+        _moveData.targetObj = target.gameObject;
+        _moveData.torque = rotateSpeed;
+        _moveData.movingSpeed = movingSpeed;
 
+        _moveTowardsTarget.SetUp(_moveData);
+        _moveTowardsTarget.StartMove();
 
-        if (rotateAmount >= 0)
-            isClockwiseMove = true;
-        else
-            isClockwiseMove = false;
-
-        rb.angularVelocity = -rotateAmount * rotateSpeed;
-        rb.velocity = transform.up * movingSpeed;
     }
 
-    bool isClockwiseMove = true;
+   
 
     public void MoveRotateARound()
     {
@@ -151,42 +160,9 @@ public class PlayerMovement : MonoBehaviour
             return;
 
         isPlayerDocked = true;
-     
 
-        rb.velocity = Vector2.zero;
-        rb.angularVelocity = 0.0f;
-
-        if (isRotationStart == false)
-        {
-            isRotationStart = true;
-            alpha = Utils.angle360(target.position, this.gameObject.transform.position);
-		}
-
-		float rad = alpha * Mathf.Deg2Rad;
-        float distance = Vector2.Distance(this.transform.position, _planetData.centerObject.transform.position);
-        float properDistance = distance ;
-        float radious = properDistance;
-        Debug.Log("distance : " + distance + "  proper distance :  " + properDistance);
-
-        posX = _planetData.centerObject.transform.position.x + Mathf.Cos(rad) * radious;
-		posY = _planetData.centerObject.transform.position.y + Mathf.Sin(rad) * radious;
-
-		transform.position = new Vector2(posX, posY);
-        if(isClockwiseMove == true)
-            alpha = alpha - Time.deltaTime * _planetData.playerAngularSpeed;
-        else
-            alpha = alpha + Time.deltaTime * _planetData.playerAngularSpeed;
-
-        Vector3 dir;
-        if(isClockwiseMove == true)
-            dir = target.position - transform.position;
-        else
-            dir = transform.position  - target.position;
-
-
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis( angle, Vector3.forward);
-
+        _rotateAround.SetUp(_moveData);
+        _rotateAround.StartMove();
     }
 
     void ForceTowardsADirection()
@@ -221,14 +197,13 @@ public class PlayerMovement : MonoBehaviour
     }
 
    
-
     void FreeJumpMove()
     {
 
         if(isCloseObjectGet == false)
         {
             isCloseObjectGet = true;
-            closeObject = GetGameobjectsWithinARadious(10.0f);
+            closeObject = GetGameobjectsWithinARadious(50.0f);
         }
         if (closeObject == null)
             return;
@@ -258,7 +233,6 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Closest Obj Name : " + closeObject.name );
         return closeObject;
     }
 

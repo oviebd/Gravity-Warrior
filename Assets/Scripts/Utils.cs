@@ -18,7 +18,6 @@ public class Utils
             directionRoot = (new Vector2(fixedPosition.x * 2, fixedPosition.y)) - fixedPosition;
 		}
 
-        
 		direction.Normalize();
 		directionRoot.Normalize();
 		float sign = (direction.y >= 0) ? 1 : -1;
@@ -36,12 +35,30 @@ public class Utils
 
     public static Vector2 GetPlayerDirection(Vector2 lastPosition, Vector2 currentPosition,Transform player)
     {
-		
  		Vector2 direction = currentPosition - lastPosition;
 		var localDirection = player.InverseTransformDirection(direction);
 
 		localDirection.Normalize();
  		return localDirection;
-
 	}
+
+    public static float GetRotateAmountBetweenTwoObject(Transform targetTransform,Transform playerTransform)
+    {
+		Vector3 direction = targetTransform.position - playerTransform.position;
+		direction.Normalize();
+		float rotateAmount = Vector3.Cross(direction, playerTransform.up).z;
+
+		return rotateAmount;
+	}
+
+    public static bool IsClockwiseMoveOrNot(Transform targetTransform, Transform playerTransform)
+    {
+		float rotateAmount = GetRotateAmountBetweenTwoObject(targetTransform,playerTransform);
+
+        if (rotateAmount >= 0)
+			return true;
+		else
+			return false;
+	}
+
 }

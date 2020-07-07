@@ -18,7 +18,7 @@ public class PlanetController : MonoBehaviour
 
     private PlanetData planetData = new PlanetData();
 
-    private void Start()
+    private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         playerMovement =  player.GetComponent<PlayerMovement>();
@@ -29,32 +29,30 @@ public class PlanetController : MonoBehaviour
     public void OuterCircleCollidedWithPlayer()
     {
         playerMovement.ResetData();
-        playerMovement.currentMovingState = PlayerMovement.movingState.TowardAPosition;
         playerMovement.SetData(planetData, center);
+        playerMovement.SetMoveState(PlayerMovement.movingState.TowardAPosition);
+        
     }
 
     public void InnerCircleCollidedWithPlayer()
     {
-        playerMovement.ResetData();
-        float dir = (player.transform.position - center.transform.position).magnitude;
-        radious = dir;
-       // SetPlanetData();
-       // Debug.Log(radious);
+       
         playerMovement.SetData(planetData, center);
         if (isItPocketType)
         {
-            if(isPocketAutoShootable == true)
+            if (isPocketAutoShootable == true)
             {
                 playerMovement.StopWithUpwordDirection();
-                playerMovement.currentMovingState = PlayerMovement.movingState.pocketShoot;
-            }else
-                playerMovement.currentMovingState = PlayerMovement.movingState.StopWithUpwordDirection;
-
+                playerMovement.SetMoveState(PlayerMovement.movingState.pocketShoot);
+            }
+            else
+                playerMovement.SetMoveState(PlayerMovement.movingState.StopWithUpwordDirection);
+                //playerMovement.currentMovingState = PlayerMovement.movingState.StopWithUpwordDirection;
 
         }
         else
         {
-            playerMovement.currentMovingState = PlayerMovement.movingState.RotateAround;
+            playerMovement.SetMoveState(PlayerMovement.movingState.RotateAround);
         }
     }
 
@@ -64,9 +62,9 @@ public class PlanetController : MonoBehaviour
         planetData = new PlanetData();
         planetData.radious = radious;
         planetData.centerObject = center;
-        planetData.playerRotationSPeed = _playerRotationSpeed;
+        planetData.playerTorque = _playerRotationSpeed;
         planetData.playerMovingSpeed = _playerMovingSpeed;
-        planetData.playerAngularSpeed = _playerAngularSpeed;
+        planetData.playerRotationSpeed = _playerAngularSpeed;
     }
 
 
