@@ -7,6 +7,6 @@ public class PlanetData
     public GameObject centerObject;
     public float radious;
     public float playerMovingSpeed;
-    public float playerAngularSpeed;
-    public float playerRotationSPeed;
+    public float playerRotationSpeed;
+    public float playerTorque;
 }
