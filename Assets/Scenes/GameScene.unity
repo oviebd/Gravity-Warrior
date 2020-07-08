@@ -181,7 +181,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 38431007}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.752343, y: -15.642612, z: -27.51725}
+  m_LocalPosition: {x: -8.814945, y: -15.642612, z: -27.51725}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1229055109}
@@ -554,12 +554,12 @@ PrefabInstance:
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerMovingSpeed
-      value: 3
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerRotationSpeed
-      value: 100
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5767b4702ae245509b04eab71b972ab, type: 3}
@@ -765,12 +765,12 @@ PrefabInstance:
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerMovingSpeed
-      value: 3
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerRotationSpeed
-      value: 100
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5767b4702ae245509b04eab71b972ab, type: 3}
@@ -957,12 +957,12 @@ PrefabInstance:
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerMovingSpeed
-      value: 3
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerRotationSpeed
-      value: 100
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5767b4702ae245509b04eab71b972ab, type: 3}
@@ -1120,7 +1120,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 50
-  field of view: 95.8238
+  field of view: 95.946106
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -1146,7 +1146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.8156378, y: -14.062731, z: -27.294392}
+  m_LocalPosition: {x: -0.51566315, y: -14.062731, z: -27.294392}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 934924335}
@@ -1358,12 +1358,12 @@ PrefabInstance:
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerMovingSpeed
-      value: 3
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerRotationSpeed
-      value: 100
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5767b4702ae245509b04eab71b972ab, type: 3}
@@ -1544,12 +1544,12 @@ PrefabInstance:
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerMovingSpeed
-      value: 3
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerRotationSpeed
-      value: 100
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 5312202380153044834, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
@@ -1598,7 +1598,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1294178878}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.183619, y: -22.717152, z: -22.51725}
+  m_LocalPosition: {x: -12.783619, y: -22.717152, z: -22.51725}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 138441775}
@@ -1898,7 +1898,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793308573}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: -17.6, z: -4.7943916}
+  m_LocalPosition: {x: -7, y: -17.6, z: -4.7943916}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 1417450873}
@@ -1917,7 +1917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233297fcea71c4b7f8675f47151c5706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movingSpeed: 15
+  movingSpeed: 20
   currentMovingState: 0
   isPlayerDocked: 0
 --- !u!50 &1793308576
@@ -1954,7 +1954,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.095878124, y: 0.41690826}
+  m_Offset: {x: -0.13203847, y: 0.42438507}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1965,7 +1965,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.0362437, y: 2.828621}
+  m_Size: {x: 0.82226074, y: 1.7760239}
   m_EdgeRadius: 0
 --- !u!114 &1793308578
 MonoBehaviour:
@@ -2052,7 +2052,6 @@ MonoBehaviour:
   isItPocketType: 1
   isPocketAutoShootable: 0
   center: {fileID: 1408678429}
-  radious: 1
   _playerAngularSpeed: 150
   _playerMovingSpeed: 5
   _playerRotationSpeed: 400

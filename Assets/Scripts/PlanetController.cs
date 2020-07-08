@@ -11,7 +11,7 @@ public class PlanetController : MonoBehaviour
     public bool isPocketAutoShootable = true;
 
     [SerializeField] private GameObject center;
-    [SerializeField] private float radious = 1.0f;
+ 
     [SerializeField] private float _playerAngularSpeed = 150.0f;
     [SerializeField] private float _playerMovingSpeed = 10.0f;
     [SerializeField] private float _playerRotationSpeed = 200.0f;
@@ -38,6 +38,7 @@ public class PlanetController : MonoBehaviour
     {
        
         playerMovement.SetData(planetData, center);
+
         if (isItPocketType)
         {
             if (isPocketAutoShootable == true)
@@ -60,7 +61,7 @@ public class PlanetController : MonoBehaviour
     private void SetPlanetData()
     {
         planetData = new PlanetData();
-        planetData.radious = radious;
+       
         planetData.centerObject = center;
         planetData.playerTorque = _playerRotationSpeed;
         planetData.playerMovingSpeed = _playerMovingSpeed;
