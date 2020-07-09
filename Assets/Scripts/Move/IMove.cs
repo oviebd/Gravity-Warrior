@@ -5,6 +5,6 @@ using UnityEngine;
 public interface IMove 
 {
     void StartMove();
-    void SetUp(MovingData data);
+    void SetUp(IMoveData data);
     void StopMove();
 }

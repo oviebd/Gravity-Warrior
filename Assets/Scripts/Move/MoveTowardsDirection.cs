@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveTowardsDirection : MoveBase,IMove
 {
-    public void SetUp(MovingData data)
+    public void SetUp(IMoveData data)
     {
         _moveData = data;
         _rb = GetRigidBody2D();
@@ -12,7 +12,7 @@ public class MoveTowardsDirection : MoveBase,IMove
 
     private void Update()
     {
-        if (_canMove == false || _rb == null && _moveData.direction == null)
+        if (CanMove() == false)
             return;
 
         Move();
@@ -20,6 +20,9 @@ public class MoveTowardsDirection : MoveBase,IMove
 
     private void Move()
     {
+        if (_moveData.direction == null)
+            return;
+
         _rb.velocity = transform.up * _moveData.movingSpeed;
     }
 

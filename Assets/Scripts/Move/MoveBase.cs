@@ -5,7 +5,7 @@ using UnityEngine;
 public class MoveBase : MonoBehaviour
 {
     protected bool _canMove = false;
-    protected MovingData _moveData = new MovingData();
+    protected  IMoveData _moveData = new  MoveData();
     protected Rigidbody2D _rb;
 
     void Start()
@@ -44,5 +44,11 @@ public class MoveBase : MonoBehaviour
         }
     }
 
-
+    protected bool CanMove()
+    {
+        if (_canMove == false || _rb == null || _moveData == null)
+            return false;
+        else
+           return true;
+    }
 }

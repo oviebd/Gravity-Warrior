@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
 
     public float movingSpeed = 5.0f;
    
-    private Transform target;
 
     public enum movingState { MoveUp, TowardAPosition, RotateAround ,ForceTowardsADirection,StopWithUpwordDirection,pocketShoot,FreeJump};
 
@@ -19,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private IMove _moveTowardsDirection;
   
   
-    private PlanetData _planetData;
+    private IMoveData _moveData;
 
    
     bool isdirectedForceStart = false;
@@ -28,16 +27,15 @@ public class PlayerMovement : MonoBehaviour
     GameObject closeObject = null;
     public bool isPlayerDocked = false;
 
-    private MovingData _moveData = new MovingData();
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        _moveData = new MoveData();
     }
 
     void Start()
     {
-        currentMovingState = movingState.MoveUp;
         _rotateAround = GetComponent<RotateAround>();
         _moveTowardsTarget = GetComponent<MoveTowardsTarget>();
         _moveTowardsDirection = GetComponent<MoveTowardsDirection>();
@@ -45,24 +43,17 @@ public class PlayerMovement : MonoBehaviour
         SetMoveState(movingState.MoveUp);
     }
 
-    public void SetData(PlanetData planetData, GameObject targetObj)
+    public void SetData(IMoveData moveData)
     {
-        target = targetObj.transform;
-        _planetData = planetData;
        
+        _moveData = moveData.DeepCopy(moveData);
+     //   Debug.Log("Set Move data with speed : " + moveData.movingSpeed);
         isdirectedForceStart = false;
-
-        _moveData = new MovingData();
-        _moveData.targetObj = targetObj;
-        _moveData.rotationSpeed = _planetData.playerRotationSpeed;
-        _moveData.movingSpeed = _planetData.playerMovingSpeed;
-        _moveData.torque = _planetData.playerTorque;
     }
 
     public void ResetData()
     {
-        target = null;
-        _planetData = null;
+        //_moveData = null;
         isCloseObjectGet = false;
         closeObject = null;
     }
@@ -78,6 +69,8 @@ public class PlayerMovement : MonoBehaviour
             else
                 SetMoveState(movingState.FreeJump);
         }
+
+       // Debug.Log(_moveData.movingSpeed + " State : " + currentMovingState );
     }
 
     public void SetMoveState(movingState state)
@@ -91,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
         switch (state)
         {
             case movingState.MoveUp:
+               // _moveData.movingSpeed = movingSpeed;
                 PlayerNormalMove();
                 break;
             case movingState.TowardAPosition:
@@ -100,6 +94,7 @@ public class PlayerMovement : MonoBehaviour
                 MoveRotateARound();
                 break;
             case movingState.ForceTowardsADirection:
+               // _moveData.movingSpeed = movingSpeed;
                 ForceTowardsADirection();
                 break;
             case movingState.StopWithUpwordDirection:
@@ -116,16 +111,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+   
     public void PlayerNormalMove()
-    {
-        PlayerNormalMove(movingSpeed);
-    }
-    public void PlayerNormalMove(float speed)
     {
         isPlayerDocked = false;
         unparentRocket();
+
         _moveData.direction = Vector3.up;
-        _moveData.movingSpeed = speed;
+        if (currentMovingState == movingState.MoveUp)
+            _moveData.movingSpeed = movingSpeed;
 
         _moveTowardsDirection.SetUp(_moveData);
         _moveTowardsDirection.StartMove();
@@ -133,30 +127,17 @@ public class PlayerMovement : MonoBehaviour
 
     public void MoveTowardsAposition()
     {
-        if (_planetData == null)
-            return;
-       // isPlayerDocked = true;
-     
-       MoveTowardsAposition(target, _planetData.playerTorque, _planetData.playerMovingSpeed);
        
-    }
-
-    public void MoveTowardsAposition(Transform target,float rotateSpeed,float movingSpeed)
-    {
-        _moveData.targetObj = target.gameObject;
-        _moveData.torque = rotateSpeed;
-        _moveData.movingSpeed = movingSpeed;
+        // isPlayerDocked = true;
 
         _moveTowardsTarget.SetUp(_moveData);
         _moveTowardsTarget.StartMove();
-
+       
     }
-
-   
 
     public void MoveRotateARound()
     {
-        if (target == null || _planetData == null)
+       if (_moveData.targetObj == null)
             return;
 
         isPlayerDocked = true;
@@ -173,6 +154,7 @@ public class PlayerMovement : MonoBehaviour
             rb.angularVelocity = 0.0f;
             
         }
+        _moveData.movingSpeed = movingSpeed;
         PlayerNormalMove();
     }
 
@@ -182,13 +164,17 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0.0f;
         transform.rotation = new Quaternion(0, 0, 0, 0);
-        transform.parent = target;
+        transform.parent = _moveData.targetObj.transform;
         transform.localPosition = Vector2.zero;
+
+        _moveData.movingSpeed = 0.0f;
     }
 
     public void ShootFromPocket()
     {
-        PlayerNormalMove(50.0f);
+        _moveData.movingSpeed = 50.0f;
+        PlayerNormalMove();
+
     }
 
     void unparentRocket()
@@ -208,7 +194,11 @@ public class PlayerMovement : MonoBehaviour
         if (closeObject == null)
             return;
 
-        MoveTowardsAposition(closeObject.transform,1000,30);
+        _moveData.targetObj = closeObject;
+        _moveData.torque = 1000.0f;
+        _moveData.movingSpeed = 30.0f;
+
+        MoveTowardsAposition();
 
     }
 

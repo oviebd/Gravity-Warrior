@@ -181,7 +181,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 38431007}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.814945, y: -15.642612, z: -27.51725}
+  m_LocalPosition: {x: -9.7922945, y: -15.642612, z: -27.51725}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1229055109}
@@ -360,7 +360,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &137678266
 Transform:
   m_ObjectHideFlags: 0
@@ -554,12 +554,12 @@ PrefabInstance:
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerMovingSpeed
-      value: 30
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerRotationSpeed
-      value: 500
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5767b4702ae245509b04eab71b972ab, type: 3}
@@ -765,12 +765,12 @@ PrefabInstance:
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerMovingSpeed
-      value: 30
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerRotationSpeed
-      value: 500
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5767b4702ae245509b04eab71b972ab, type: 3}
@@ -957,12 +957,12 @@ PrefabInstance:
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerMovingSpeed
-      value: 30
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerRotationSpeed
-      value: 500
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5767b4702ae245509b04eab71b972ab, type: 3}
@@ -1120,7 +1120,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 50
-  field of view: 95.946106
+  field of view: 95.87877
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -1146,7 +1146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.51566315, y: -14.062731, z: -27.294392}
+  m_LocalPosition: {x: -0.05433774, y: -14.062731, z: -27.294392}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 934924335}
@@ -1252,7 +1252,12 @@ PrefabInstance:
     - target: {fileID: 5335588647194986049, guid: 4321c9e7dfcdb41eea11791de39d4c5a,
         type: 3}
       propertyPath: _playerRotationSpeed
-      value: 400
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5335588647194986049, guid: 4321c9e7dfcdb41eea11791de39d4c5a,
+        type: 3}
+      propertyPath: _playerMovingSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5335588647194986063, guid: 4321c9e7dfcdb41eea11791de39d4c5a,
         type: 3}
@@ -1358,12 +1363,12 @@ PrefabInstance:
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerMovingSpeed
-      value: 30
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerRotationSpeed
-      value: 500
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5767b4702ae245509b04eab71b972ab, type: 3}
@@ -1544,12 +1549,12 @@ PrefabInstance:
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerMovingSpeed
-      value: 30
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3341616838131999689, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
       propertyPath: _playerRotationSpeed
-      value: 500
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 5312202380153044834, guid: e5767b4702ae245509b04eab71b972ab,
         type: 3}
@@ -1598,7 +1603,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1294178878}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.783619, y: -22.717152, z: -22.51725}
+  m_LocalPosition: {x: -10.883619, y: -22.717152, z: -22.51725}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 138441775}
@@ -1898,7 +1903,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793308573}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7, y: -17.6, z: -4.7943916}
+  m_LocalPosition: {x: -5.1, y: -17.6, z: -4.7943916}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 1417450873}
@@ -2052,9 +2057,6 @@ MonoBehaviour:
   isItPocketType: 1
   isPocketAutoShootable: 0
   center: {fileID: 1408678429}
-  _playerAngularSpeed: 150
-  _playerMovingSpeed: 5
-  _playerRotationSpeed: 400
 --- !u!50 &1946568425
 Rigidbody2D:
   serializedVersion: 4
