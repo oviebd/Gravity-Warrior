@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 5335588646518726012}
   - component: {fileID: 5335588646518726011}
   - component: {fileID: 5335588646518726009}
-  - component: {fileID: 5335588646518726008}
   - component: {fileID: 5335588646518726010}
+  - component: {fileID: 2005292253204322849}
+  - component: {fileID: 8943723110230306587}
   m_Layer: 8
   m_Name: Inner circle
   m_TagString: Untagged
@@ -105,32 +106,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!114 &5335588646518726008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5335588646518725895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b67d3be94e0549c48e3aea64d3b5bb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onCollide:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5335588647194986049}
-        m_MethodName: InnerCircleCollidedWithPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!58 &5335588646518726010
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -147,6 +122,34 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.0000009536743}
   serializedVersion: 2
   m_Radius: 1.1811022
+--- !u!114 &2005292253204322849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335588646518725895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d00cbaa81604214ba50faddc24739b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+--- !u!114 &8943723110230306587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335588646518725895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61d67ff2c31847bc90ed15a6917304b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerRotationSpeed: 150
 --- !u!1 &5335588647065641263
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,9 +160,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5335588647065641248}
   - component: {fileID: 5335588647065641252}
-  - component: {fileID: 5335588647065641250}
   - component: {fileID: 5335588647065641249}
   - component: {fileID: 5335588647065641251}
+  - component: {fileID: 5765145907510191771}
+  - component: {fileID: 7495940869090658029}
   m_Layer: 9
   m_Name: outer circle
   m_TagString: Untagged
@@ -231,32 +235,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5335588647065641250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5335588647065641263}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b67d3be94e0549c48e3aea64d3b5bb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onCollide:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5335588647194986049}
-        m_MethodName: OuterCircleCollidedWithPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!50 &5335588647065641249
 Rigidbody2D:
   serializedVersion: 4
@@ -304,6 +282,36 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.6526594, y: 4.6299305}
   m_EdgeRadius: 0
+--- !u!114 &5765145907510191771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335588647065641263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d00cbaa81604214ba50faddc24739b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+--- !u!114 &7495940869090658029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335588647065641263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ce5de06cba64edfaa5c9cece24cad7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nextTarget: {fileID: 5335588646518725895}
+  _playerMovingSpeed: 10
+  _playerTorque: 400
 --- !u!1 &5335588647194986063
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,8 +321,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5335588647194986048}
-  - component: {fileID: 5335588647194986049}
   - component: {fileID: 5335588647194986050}
+  - component: {fileID: 2619939525430058558}
   m_Layer: 0
   m_Name: pocket autoSHoot
   m_TagString: Untagged
@@ -338,25 +346,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5335588647194986049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5335588647194986063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9be1160648027444ea7d5fd7028d2db1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isItPocketType: 1
-  isPocketAutoShootable: 1
-  center: {fileID: 5335588646518725895}
-  radious: 1
-  _playerAngularSpeed: 150
-  _playerMovingSpeed: 5
-  _playerRotationSpeed: 400
 --- !u!50 &5335588647194986050
 Rigidbody2D:
   serializedVersion: 4
@@ -378,3 +367,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2619939525430058558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5335588647194986063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5e3396dd468b4281b12bfef18976d10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isAutoLaunch: 1
+  _launchSpeed: 50

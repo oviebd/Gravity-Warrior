@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3341616837654908715}
   - component: {fileID: 3341616837654908714}
   - component: {fileID: 3341616837654908719}
-  - component: {fileID: 3341616837654908716}
   - component: {fileID: 9147218625602524610}
-  - component: {fileID: 5312202380153044834}
+  - component: {fileID: 395532537073649784}
+  - component: {fileID: 3511047137573855096}
   m_Layer: 8
   m_Name: Inner circle
   m_TagString: InnerCircle
@@ -106,32 +106,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!114 &3341616837654908716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3341616837654908712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b67d3be94e0549c48e3aea64d3b5bb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onCollide:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3341616838131999689}
-        m_MethodName: InnerCircleCollidedWithPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!58 &9147218625602524610
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -148,7 +122,7 @@ CircleCollider2D:
   m_Offset: {x: 0.0042574885, y: 0}
   serializedVersion: 2
   m_Radius: 0.5295968
---- !u!114 &5312202380153044834
+--- !u!114 &395532537073649784
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,11 +131,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 3341616837654908712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77a4b35c4d0cf45e6858d14fd816d5f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d00cbaa81604214ba50faddc24739b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  G: 2
-  isAttractorACtive: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+--- !u!114 &3511047137573855096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3341616837654908712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b61d67ff2c31847bc90ed15a6917304b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerRotationSpeed: 150
 --- !u!1 &3341616838131999687
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,8 +159,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3341616838131999686}
-  - component: {fileID: 3341616838131999689}
   - component: {fileID: 3341616838131999691}
+  - component: {fileID: 8158413208873095204}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -196,25 +184,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3341616838131999689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3341616838131999687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9be1160648027444ea7d5fd7028d2db1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isItPocketType: 0
-  isPocketAutoShootable: 0
-  center: {fileID: 3341616837654908712}
-  radious: 1
-  _playerAngularSpeed: 150
-  _playerMovingSpeed: 5
-  _playerRotationSpeed: 10
 --- !u!50 &3341616838131999691
 Rigidbody2D:
   serializedVersion: 4
@@ -236,6 +205,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8158413208873095204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3341616838131999687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22ce6c8eece204d51b1bc79f55e5d46b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isItPocketType: 0
+  isPocketAutoShootable: 0
 --- !u!1 &3341616838775174097
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,9 +229,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3341616838775174096}
   - component: {fileID: 3341616838775174101}
-  - component: {fileID: 3341616838775174099}
   - component: {fileID: 3341616838775174100}
   - component: {fileID: 120096008794747063}
+  - component: {fileID: 3100666857610188582}
+  - component: {fileID: 249284994347843610}
   m_Layer: 9
   m_Name: outer circle
   m_TagString: OuterCircle
@@ -320,32 +304,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3341616838775174099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3341616838775174097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b67d3be94e0549c48e3aea64d3b5bb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onCollide:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3341616838131999689}
-        m_MethodName: OuterCircleCollidedWithPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!50 &3341616838775174100
 Rigidbody2D:
   serializedVersion: 4
@@ -383,3 +341,33 @@ CircleCollider2D:
   m_Offset: {x: -0.00000047683716, y: 0.10119343}
   serializedVersion: 2
   m_Radius: 2.0841904
+--- !u!114 &3100666857610188582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3341616838775174097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d00cbaa81604214ba50faddc24739b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+--- !u!114 &249284994347843610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3341616838775174097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ce5de06cba64edfaa5c9cece24cad7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nextTarget: {fileID: 3341616837654908712}
+  _playerMovingSpeed: 10
+  _playerTorque: 200

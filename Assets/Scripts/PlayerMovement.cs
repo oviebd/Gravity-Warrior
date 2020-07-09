@@ -45,15 +45,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetData(IMoveData moveData)
     {
-       
         _moveData = moveData.DeepCopy(moveData);
-     //   Debug.Log("Set Move data with speed : " + moveData.movingSpeed);
         isdirectedForceStart = false;
     }
 
     public void ResetData()
     {
-        //_moveData = null;
         isCloseObjectGet = false;
         closeObject = null;
     }
@@ -84,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
         switch (state)
         {
             case movingState.MoveUp:
-               // _moveData.movingSpeed = movingSpeed;
                 PlayerNormalMove();
                 break;
             case movingState.TowardAPosition:
@@ -94,7 +90,6 @@ public class PlayerMovement : MonoBehaviour
                 MoveRotateARound();
                 break;
             case movingState.ForceTowardsADirection:
-               // _moveData.movingSpeed = movingSpeed;
                 ForceTowardsADirection();
                 break;
             case movingState.StopWithUpwordDirection:
@@ -107,7 +102,6 @@ public class PlayerMovement : MonoBehaviour
             case movingState.FreeJump:
                 FreeJumpMove();
                 break;
-
         }
     }
 
@@ -127,19 +121,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void MoveTowardsAposition()
     {
-       
-        // isPlayerDocked = true;
-
         _moveTowardsTarget.SetUp(_moveData);
         _moveTowardsTarget.StartMove();
-       
     }
+
 
     public void MoveRotateARound()
     {
-       if (_moveData.targetObj == null)
-            return;
-
         isPlayerDocked = true;
 
         _rotateAround.SetUp(_moveData);
@@ -166,15 +154,11 @@ public class PlayerMovement : MonoBehaviour
         transform.rotation = new Quaternion(0, 0, 0, 0);
         transform.parent = _moveData.targetObj.transform;
         transform.localPosition = Vector2.zero;
-
-        _moveData.movingSpeed = 0.0f;
     }
 
     public void ShootFromPocket()
     {
-        _moveData.movingSpeed = 50.0f;
         PlayerNormalMove();
-
     }
 
     void unparentRocket()
@@ -225,7 +209,4 @@ public class PlayerMovement : MonoBehaviour
         }
         return closeObject;
     }
-
-
-
 }
