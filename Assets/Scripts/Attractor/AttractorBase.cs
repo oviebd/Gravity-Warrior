@@ -8,13 +8,11 @@ public class AttractorBase : MonoBehaviour
 
     private void Awake()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        playerMovement = player.GetComponent<PlayerMovement>();
+        playerMovement = PlayerMovement.instance;
     }
 
     public void OuterCircleCollided(IMoveData playerAttractData)
     {
-        playerMovement.ResetData();
         playerMovement.SetData(playerAttractData);
         playerMovement.SetMoveState(PlayerMovement.movingState.TowardAPosition);
     }

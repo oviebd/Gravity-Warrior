@@ -4,33 +4,25 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody2D rb;
+    public static PlayerMovement instance;
 
-    public float movingSpeed = 5.0f;
-   
+    [SerializeField] private float _movingSpeed = 5.0f;
+    [SerializeField] private bool _isPlayerDocked = false;
 
-    public enum movingState { MoveUp, TowardAPosition, RotateAround ,ForceTowardsADirection,StopWithUpwordDirection,pocketShoot,FreeJump};
-
-    public movingState currentMovingState = movingState.MoveUp;
+    public enum movingState { TowardAPosition, RotateAround ,MoveTowardsAdirection,DockedInLauncher,FreeJump};
+    private movingState currentMovingState;
 
     private IMove _rotateAround;
     private IMove _moveTowardsTarget;
     private IMove _moveTowardsDirection;
   
-  
     private IMoveData _moveData;
-
-   
-    bool isdirectedForceStart = false;
-
-    bool isCloseObjectGet = false;
-    GameObject closeObject = null;
-    public bool isPlayerDocked = false;
-
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        if (instance == null)
+            instance = this;
+
         _moveData = new MoveData();
     }
 
@@ -40,19 +32,12 @@ public class PlayerMovement : MonoBehaviour
         _moveTowardsTarget = GetComponent<MoveTowardsTarget>();
         _moveTowardsDirection = GetComponent<MoveTowardsDirection>();
 
-        SetMoveState(movingState.MoveUp);
+        SetMoveState(movingState.MoveTowardsAdirection);
     }
 
     public void SetData(IMoveData moveData)
     {
         _moveData = moveData.DeepCopy(moveData);
-        isdirectedForceStart = false;
-    }
-
-    public void ResetData()
-    {
-        isCloseObjectGet = false;
-        closeObject = null;
     }
    
     void Update()
@@ -60,60 +45,51 @@ public class PlayerMovement : MonoBehaviour
        
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (isPlayerDocked == true)
-                SetMoveState(movingState.ForceTowardsADirection);
+            if (_isPlayerDocked == true)
+                SetMoveState(movingState.MoveTowardsAdirection);
           
             else
                 SetMoveState(movingState.FreeJump);
         }
 
-       // Debug.Log(_moveData.movingSpeed + " State : " + currentMovingState );
+        //Debug.Log(_moveData.movingSpeed + " State : " + currentMovingState  + "  Speed :  " + _moveData.movingSpeed);
     }
 
     public void SetMoveState(movingState state)
     {
         currentMovingState = state;
-
-        _moveTowardsTarget.StopMove();
-        _rotateAround.StopMove();
-        _moveTowardsDirection.StopMove();
+        Utils.StopOrStartMovementOfAobj(this.gameObject, false);
 
         switch (state)
         {
-            case movingState.MoveUp:
-                PlayerNormalMove();
-                break;
             case movingState.TowardAPosition:
                 MoveTowardsAposition();
                 break;
             case movingState.RotateAround:
                 MoveRotateARound();
                 break;
-            case movingState.ForceTowardsADirection:
-                ForceTowardsADirection();
+            case movingState.MoveTowardsAdirection:
+                MoveTowardsAdirection();
                 break;
-            case movingState.StopWithUpwordDirection:
-               StopWithUpwordDirection();
+            case movingState.DockedInLauncher:
+                DockInLauncher();
                 break;
-            case movingState.pocketShoot:
-               ShootFromPocket();
-                break;
-
+       
             case movingState.FreeJump:
-                FreeJumpMove();
+                GoToClosestPlanet();
                 break;
         }
     }
 
-   
-    public void PlayerNormalMove()
+
+    void MoveTowardsAdirection()
     {
-        isPlayerDocked = false;
-        unparentRocket();
+        _isPlayerDocked = false;
+        transform.parent = null;
 
         _moveData.direction = Vector3.up;
-        if (currentMovingState == movingState.MoveUp)
-            _moveData.movingSpeed = movingSpeed;
+        if (_moveData.movingSpeed <= 0)
+            _moveData.movingSpeed = _movingSpeed;
 
         _moveTowardsDirection.SetUp(_moveData);
         _moveTowardsDirection.StartMove();
@@ -125,56 +101,25 @@ public class PlayerMovement : MonoBehaviour
         _moveTowardsTarget.StartMove();
     }
 
-
     public void MoveRotateARound()
     {
-        isPlayerDocked = true;
+        _isPlayerDocked = true;
 
         _rotateAround.SetUp(_moveData);
         _rotateAround.StartMove();
     }
 
-    void ForceTowardsADirection()
+    public void DockInLauncher()
     {
-        if(isdirectedForceStart == false)
-        {
-            isdirectedForceStart = true;
-            rb.angularVelocity = 0.0f;
-            
-        }
-        _moveData.movingSpeed = movingSpeed;
-        PlayerNormalMove();
-    }
-
-
-    public void StopWithUpwordDirection()
-    {
-        rb.velocity = Vector2.zero;
-        rb.angularVelocity = 0.0f;
         transform.rotation = new Quaternion(0, 0, 0, 0);
         transform.parent = _moveData.targetObj.transform;
         transform.localPosition = Vector2.zero;
     }
-
-    public void ShootFromPocket()
-    {
-        PlayerNormalMove();
-    }
-
-    void unparentRocket()
-    {
-        transform.parent = null;
-    }
-
    
-    void FreeJumpMove()
+    void GoToClosestPlanet()
     {
+        GameObject closeObject = Utils.GetGameobjectsWithinARadious(50.0f, GameEnum.Tags.InnerCircle.ToString(), this.gameObject);
 
-        if(isCloseObjectGet == false)
-        {
-            isCloseObjectGet = true;
-            closeObject = GetGameobjectsWithinARadious(50.0f);
-        }
         if (closeObject == null)
             return;
 
@@ -183,30 +128,6 @@ public class PlayerMovement : MonoBehaviour
         _moveData.movingSpeed = 30.0f;
 
         MoveTowardsAposition();
-
     }
 
-    GameObject GetGameobjectsWithinARadious(float range)
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(this.gameObject.transform.position, range);
-        float minDistance = Mathf.Infinity;
-        GameObject closeObject = null;
-        Collider2D playerCollider = this.gameObject.GetComponent<Collider2D>();
-        for(int i= 0; i < colliders.Length; i++)
-        {
-            GameObject obj = colliders[i].gameObject;
-                
-           
-            if (playerCollider != colliders[i] && obj.tag == "InnerCircle")
-            {
-                float distance = Vector2.Distance(this.transform.position, obj.transform.position);
-                if(distance < minDistance)
-                {
-                    closeObject = obj;
-                    minDistance = distance;
-                }
-            }
-        }
-        return closeObject;
-    }
 }

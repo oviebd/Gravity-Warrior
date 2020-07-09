@@ -61,4 +61,50 @@ public class Utils
 			return false;
 	}
 
+    public static IMove[] GetAllImoveObjectFromAobject(GameObject obj)
+    {
+		IMove[] iMoveList = obj.gameObject.GetComponents<IMove>();
+		return iMoveList;
+    }
+
+    public static void StopOrStartMovementOfAobj(GameObject obj,bool canMove)
+    {
+		IMove[] iMoveList = GetAllImoveObjectFromAobject(obj);
+        if(iMoveList != null && iMoveList.Length > 0)
+        {
+            for(int i=0; i<iMoveList.Length; i++)
+            {
+                if(canMove == true)
+					iMoveList[i].StartMove();
+                else
+					iMoveList[i].StopMove();
+			}
+        }
+
+	}
+
+   public static GameObject GetGameobjectsWithinARadious(float range, string tag,GameObject centerObj)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(centerObj.transform.position, range);
+        float minDistance = Mathf.Infinity;
+        GameObject closeObject = null;
+        Collider2D playerCollider = centerObj.gameObject.GetComponent<Collider2D>();
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            GameObject obj = colliders[i].gameObject;
+
+
+            if (playerCollider != colliders[i] && obj.tag == tag)
+            {
+                float distance = Vector2.Distance(centerObj.transform.position, obj.transform.position);
+                if (distance < minDistance)
+                {
+                    closeObject = obj;
+                    minDistance = distance;
+                }
+            }
+        }
+        return closeObject;
+    }
+
 }

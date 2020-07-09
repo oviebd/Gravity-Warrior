@@ -11,20 +11,18 @@ public class LauncherAttractorController : AttractorBase, IAttractor
 
     public void InnerCircleCollided(IMoveData playerAttractData)
     {
-        playerMovement.ResetData();
-
         if (_isAutoLaunch == true)
         {
             playerAttractData.movingSpeed = _launchSpeed;
             playerMovement.SetData(playerAttractData);
-            playerMovement.StopWithUpwordDirection();
-            playerMovement.SetMoveState(PlayerMovement.movingState.pocketShoot);
+            playerMovement.DockInLauncher();
+            playerMovement.SetMoveState(PlayerMovement.movingState.MoveTowardsAdirection);
         }
         else
         {
             playerAttractData.movingSpeed = 0.0f;
             playerMovement.SetData(playerAttractData);
-            playerMovement.SetMoveState(PlayerMovement.movingState.StopWithUpwordDirection);
+            playerMovement.SetMoveState(PlayerMovement.movingState.DockedInLauncher);
         }
             
     }
